@@ -1,0 +1,234 @@
+[ Ilość osób połączonych ]
+- Server -> Client
+- Wysyłane co kilka sekund
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "count"
+- ev_data: (Number, ilość osób połączonych)
+
+================================================
+
+[ Ping ]
+- Server <- Client
+- Wysyłane co kilka sekund
+- Musi odpowiedzieć websoketem (3)
+Dane:
+- Identyfikator wiadomości Websocket (2)
+
+================================================
+
+[ Pong ]
+- Server -> Client
+- Wysyłane w ramach odpowiedzi na Ping
+Dane:
+- Identyfikator wiadomości Websocket (3)
+
+================================================
+
+[ Nawiązanie połączenia ]
+- Server -> Client
+- Wysyłane przed pokazaniem captcha
+Dane:
+- Identyfikator wiadomości Websocket (0)
+- sid: (String, Session ID)
+- upgrades: (Array, TODO)
+- pingInterval: (Number, czas w jakim powinno się odesłać Ponga)
+- pingTimeout: (Number, czas w jakim server uzna połączenie za nieaktywne)
+
+================================================
+
+[ Akceptacja połączenia ]
+- Server -> Client
+- Wysyłane przed pokazaniem captcha
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "cn_acc"
+- ev_data: (Object)
+  - conn_id: (String, identyfikator połączenia)
+  - hash: (String, unikalny hash połączenia)
+  - tlce: (null, Typing-Like Chat Experience)
+
+================================================
+
+[ Krok przy nawiązywaniu połączenia ]
+- Server <- Client
+- Wysyłane przed pokazaniem captcha
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_cinfo"
+- ev_data: (Object)
+  - hash: (String, unikalny hash połączenia)
+  - dpa: (Boolean, prawdopodobnie Data Processing Agreement TODO) (true)
+  - caper: (Boolean, TODO) (true)
+
+================================================
+
+[ Krok przy nawiązywaniu połączenia ] #0
+- Server <- Client
+- Wysyłane przed pokazaniem captcha
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_sas"
+- ev_data: (Object)
+  - channel: (String, TODO) ("main")
+  - myself: (Object)
+    - sex: (Number, płeć użytkowinka) (0)
+    - loc: (Number, lokalizacja użytkowinka) (0)
+  - preferences: (Object)
+    - sex: (Number, płeć rozmówcy) (0)
+    - loc: (Number, lokalizacja rozmówcy) (0)
+- ceid: (Number, prawdopodobnie Client Event ID TODO) (1)
+
+================================================
+
+[ Wysyłanie chapty do użytkownika ]
+- Server -> Client
+- Wysyłane chapty
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name": "caprecvsas"
+- ev_data: (Object)
+  - tlce: (Object)
+    - dtype: (String, typ captchy) ("img")
+    - data: (String, obrazek captchy zakodowany do base64) (data:image/jpeg;base64,....)
+    - cmdText: (String, opis captchy) ("Jaki tekst jest na obrazku? (7 znaków)")
+
+================================================
+
+[ Resetowanie chapty ]
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_capch"
+
+================================================
+
+[ Odbiór zresetowanej wiadomości chapty ]
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "capchresp"
+- ev_data: (Object)
+  - success: (Boolean, czy zaakceptowane zresetowanie chapty) (true)
+  - tlce: (Object)
+    - dtype: (String, rodzaj chapty) ("img")
+    - data: (String, obrazek captchy zakodowany do base64) (data:image/jpeg;base64,....)
+    - cmdText: (String, opis captchy) ("Jaki tekst jest na obrazku? (7 znaków)")
+
+================================================
+
+[ Wysyłanie rozwiązanej chapty ]
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_capsol"
+- ev_data: (Object)
+  - solution: (String, rozwiązana chapta)
+
+================================================
+
+[ Czy chapta się zgadza ]
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "capissol"
+- ev_data: (Object)
+  - success: (Boolean, czy chapta została rozwiązana)
+
+================================================
+
+[ Dalsze kroki łączenia z chatem ] #1
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "talk_s"
+- ev_data: (Object)
+  - cid: (Number, prawdopodobnie client ID)
+  - ckey: (String, prawdopodobnie klucz interakcji clienta)
+  - flaged: (Boolean, prawdopodobnie czy jest zgłoszony)
+
+================================================
+
+[ Dalsze kroki łączenia z chatem ] #2
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_begacked"
+- ev_data: (Object)
+  - ckey: (String, prawdopodobnie klucz interakcji clienta)
+- ceid: (Number, prawdopodobnie Client Event ID TODO) (7)
+
+================================================
+
+[ STYP TODO ] #3
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "styp"
+- ev_data: (Boolean, TODO) (true)
+
+================================================
+
+[ MTYP TODO ] #4
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_mtyp"
+- ev_data: (Object)
+  - ckey: (String, prawdopodobnie klucz interakcji clienta)
+  - val: (Boolean, TODO)
+
+================================================
+
+[ Odebranie wiadomości ] #5
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "rmsg"
+- ev_data: (Object)
+  - post_id: (Number, prawdopodobnie numer wiadomości)
+  - cid: (Number, prawdopodobnie client ID)
+  - msg: (String, wiadomość odebrana od rozmówcy)
+  - who: (Number, prawdopodobnie płeć)
+
+================================================
+
+[ Wysyłanie wiadomości wiadomości ] #5
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_pmsg"
+- ev_data: (Object)
+  - ckey: (String, prawdopodobnie klucz interakcji clienta)
+  - msg: (String, wiadomość wysłana od rozmówcy)
+  - idn: (Number, TODO) (0)
+- ceid: (Number, prawdopodobnie Client Event ID TODO) (7)
+
+================================================
+
+[ Rozłączenie się servera ] #5
+- Server <- Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "_distalk"
+- ev_data: (Object)
+  - ckey: (String, prawdopodobnie klucz interakcji clienta)
+- ceid: (Number, prawdopodobnie Client Event ID TODO) (8)
+
+================================================
+
+[ Rozłączenie się servera ] #5
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "sdis"
+- ev_data: (Number, prawdopodobnie client ID)
+
+================================================
+
+[ Rozłączenie się servera ] #5
+- Server -> Client
+Dane:
+- Identyfikator wiadomości Websocket (4)
+- ev_name: "r_svmsg"
+- ev_data: (String, useless komunikat co 30 minut) (Zaproś znajomych na 6obcy, kliknij #ARROW_R# #SHARE#)
